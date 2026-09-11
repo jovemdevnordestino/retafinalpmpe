@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Desafio 1500 Questões — PMPE (AOCP)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --bg:#12151a;
+    --surface:#1a1e25;
+    --surface-2:#20252d;
+    --border:#2b323c;
+    --text:#eef0f3;
+    --text-dim:#8b93a1;
+    --jeferson:#e2a336;
+    --jeferson-dim:#4a3a1f;
+    --guilherme:#5b8fd6;
+    --guilherme-dim:#232f42;
+    --good:#5fb98a;
+    --bad:#d3695f;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    padding-bottom:60px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- Header ---------- */
+  .top{
+    border-bottom:1px solid var(--border);
+    padding:28px 0 22px;
+    margin-bottom:28px;
+  }
+  .top .eyebrow{
+    color:var(--text-dim);
+    font-size:13px;
+    letter-spacing:.02em;
+    margin:0 0 6px;
+  }
+  .top h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:32px;
+    margin:0 0 10px;
+    letter-spacing:-.01em;
+  }
+  .top-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 18px;
+    align-items:center;
+    color:var(--text-dim);
+    font-size:14px;
+  }
+  .top-meta b{color:var(--text);font-weight:600;}
+  #dias-restantes{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--text);
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:13px;
+  }
+
+  /* ---------- Duel scoreboard ---------- */
+  .duelo{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:0 18px;
+    align-items:stretch;
+    margin-bottom:14px;
+  }
+  .vs{
+    align-self:center;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    color:var(--text-dim);
+    font-size:15px;
+  }
+  .jogador{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+    transition:border-color .2s ease;
+  }
+  .jogador:hover{border-color:#3a4250;}
+  .jogador.ativo{border-color:var(--cor);}
+  .jogador::before{
+    content:"";
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:3px;
+    background:var(--cor);
+  }
+  .jogador .nome-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+  }
+  .jogador h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:19px;
+    margin:0;
+  }
+  .tag-voce{
+    font-size:11px;
+    color:var(--cor);
+    border:1px solid var(--cor);
+    border-radius:20px;
+    padding:2px 9px;
+    opacity:0;
+    transition:opacity .2s ease;
+  }
+  .jogador.ativo .tag-voce{opacity:1;}
+  .placar-linha{margin-bottom:12px;}
+  .placar-linha:last-child{margin-bottom:0;}
+  .placar-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-bottom:6px;
+  }
+  .placar-label span:last-child{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--text);
+  }
+  .barra{
+    height:7px;
+    border-radius:4px;
+    background:var(--surface-2);
+    overflow:hidden;
+  }
+  .barra-fill{
+    height:100%;
+    background:var(--cor);
+    width:0%;
+    transition:width .4s ease;
+  }
+  .aproveitamento-mini{
+    margin-top:14px;
+    display:flex;
+    gap:16px;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+  .aproveitamento-mini b{
+    display:block;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--text);
+    font-size:15px;
+    font-weight:700;
+  }
+
+  .lancando-como{
+    text-align:center;
+    color:var(--text-dim);
+    font-size:12.5px;
+    margin:12px 0 34px;
+  }
+  .lancando-como b{color:var(--cor-ativa,var(--jeferson));}
+
+  /* ---------- Registrador ---------- */
+  h2.secao{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:20px;
+    margin:0 0 16px;
+  }
+  .materia{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    margin-bottom:12px;
+    overflow:hidden;
+  }
+  .materia-header{
+    padding:15px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    user-select:none;
+  }
+  .materia-header .nome{
+    font-weight:600;
+    font-size:15.5px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .materia-header .contagem{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+  .chev{
+    color:var(--text-dim);
+    transition:transform .2s ease;
+    font-size:12px;
+  }
+  .materia.aberta .chev{transform:rotate(180deg);}
+  .assunto-lista{display:none;}
+  .materia.aberta .assunto-lista{display:block;}
+  .assunto{
+    border-top:1px solid var(--border);
+    padding:13px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    background:var(--surface-2);
+  }
+  .assunto .titulo{
+    font-size:13.5px;
+    color:var(--text);
+    flex:1 1 220px;
+  }
+  .campos{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .campo-lbl{font-size:11.5px;color:var(--text-dim);}
+  .campo-input{
+    width:56px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:6px;
+    text-align:center;
+    padding:6px 4px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+  }
+  .campo-input:focus{outline:none;border-color:var(--cor-ativa,var(--jeferson));}
+  .campo-input.acertos:focus{border-color:var(--good);}
+  .campo-input.erros:focus{border-color:var(--bad);}
+  .btn-salvar{
+    background:var(--cor-ativa,var(--jeferson));
+    color:#12151a;
+    border:none;
+    border-radius:6px;
+    padding:7px 13px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    transition:opacity .15s ease;
+  }
+  .btn-salvar:hover{opacity:.85;}
+  .btn-salvar:disabled{opacity:.4;cursor:default;}
+  .status-msg{
+    font-size:11.5px;
+    color:var(--good);
+    min-width:60px;
+  }
+  .status-msg.erro{color:var(--bad);}
+
+  /* ---------- Feed ---------- */
+  .feed{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    margin-top:28px;
+    padding:6px 0;
+  }
+  .feed-item{
+    padding:11px 18px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-size:13px;
+  }
+  .feed-item:last-child{border-bottom:none;}
+  .feed-quem{font-weight:600;}
+  .feed-detalhe{color:var(--text-dim);flex:1;}
+  .feed-resultado{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--text-dim);
+    white-space:nowrap;
+  }
+  .feed-vazio{padding:20px 18px;color:var(--text-dim);font-size:13px;}
+
+  .config-aviso{
+    background:var(--surface-2);
+    border:1px solid var(--bad);
+    color:var(--text);
+    border-radius:var(--radius);
+    padding:14px 18px;
+    font-size:13px;
+    margin-bottom:24px;
+    line-height:1.5;
+  }
+  .config-aviso code{
+    background:var(--bg);
+    padding:1px 6px;
+    border-radius:4px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+  }
+
+  @media (max-width:620px){
+    .duelo{grid-template-columns:1fr;gap:10px;}
+    .vs{display:none;}
+    .top h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="top">
+    <p class="eyebrow">Desafio 1500 Questões</p>
+    <h1>PMPE Soldado — Banca AOCP</h1>
+    <div class="top-meta">
+      <span>Meta: <b>50 questões/dia</b> até 11 de outubro</span>
+      <span id="dias-restantes">calculando…</span>
+    </div>
+  </header>
+
+  <div id="config-aviso" class="config-aviso" style="display:none;"></div>
+
+  <!-- Placar de duelo -->
+  <div class="duelo">
+    <div class="jogador ativo" id="card-jeferson" style="--cor:var(--jeferson);" onclick="selecionarUsuario('jeferson')">
+      <div class="nome-row">
+        <h3>Jeferson</h3>
+        <span class="tag-voce">lançando</span>
+      </div>
+      <div class="placar-linha">
+        <div class="placar-label"><span>Meta geral (1500)</span><span id="jeferson-total-txt">0 / 1500</span></div>
+        <div class="barra"><div class="barra-fill" id="jeferson-total-bar"></div></div>
+      </div>
+      <div class="placar-linha">
+        <div class="placar-label"><span>Hoje (50)</span><span id="jeferson-hoje-txt">0 / 50</span></div>
+        <div class="barra"><div class="barra-fill" id="jeferson-hoje-bar"></div></div>
+      </div>
+      <div class="aproveitamento-mini">
+        <div>Acertos <b id="jeferson-acertos">0</b></div>
+        <div>Erros <b id="jeferson-erros">0</b></div>
+        <div>Aproveitamento <b id="jeferson-aproveitamento">—</b></div>
+      </div>
+    </div>
+
+    <div class="vs">vs</div>
+
+    <div class="jogador" id="card-guilherme" style="--cor:var(--guilherme);" onclick="selecionarUsuario('guilherme')">
+      <div class="nome-row">
+        <h3>Guilherme</h3>
+        <span class="tag-voce">lançando</span>
+      </div>
+      <div class="placar-linha">
+        <div class="placar-label"><span>Meta geral (1500)</span><span id="guilherme-total-txt">0 / 1500</span></div>
+        <div class="barra"><div class="barra-fill" id="guilherme-total-bar"></div></div>
+      </div>
+      <div class="placar-linha">
+        <div class="placar-label"><span>Hoje (50)</span><span id="guilherme-hoje-txt">0 / 50</span></div>
+        <div class="barra"><div class="barra-fill" id="guilherme-hoje-bar"></div></div>
+      </div>
+      <div class="aproveitamento-mini">
+        <div>Acertos <b id="guilherme-acertos">0</b></div>
+        <div>Erros <b id="guilherme-erros">0</b></div>
+        <div>Aproveitamento <b id="guilherme-aproveitamento">—</b></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="lancando-como">Lançando questões como <b id="lancando-como-nome">Jeferson</b> — clique no seu card acima para trocar</p>
+
+  <h2 class="secao">Registrar questões por assunto</h2>
+  <div id="materias"></div>
+
+  <div class="feed">
+    <div id="feed-lista" class="feed-vazio">Nenhum lançamento ainda.</div>
+  </div>
+
+</div>
+
+<script>
+/* ====== CONFIGURAÇÃO SUPABASE — preencha aqui ====== */
+const SUPABASE_URL = "https://fzpfebjklshecoeevtra.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6cGZlYmprbHNoZWNvZWV2dHJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNDEyOTMsImV4cCI6MjEwNDcxNzI5M30.bJ1rHtSgXeEQBPgNYUNkAMkeKD7w5l7KAx1HUufm-T4";
+/* ==================================================== */
+
+// Captura qualquer erro de JS e mostra um aviso visível na página,
+// em vez de a interface simplesmente travar em silêncio.
+window.addEventListener('error', function(ev){
+  const aviso = document.getElementById('config-aviso');
+  if(aviso){
+    aviso.style.display = "block";
+    aviso.innerHTML = "Erro no script: <code>" + (ev.message || ev.error) + "</code> (linha " + ev.lineno + ")";
+  }
+});
+
+const META_TOTAL = 1500;
+const META_DIARIA = 50;
+const BANCA = "Instituto AOCP";
+const DATA_ALVO = new Date('2026-10-11');
+
+const USUARIOS = {
+  jeferson: { nome: "Jeferson", cor: "var(--jeferson)" },
+  guilherme: { nome: "Guilherme", cor: "var(--guilherme)" }
+};
+
+// Matérias e assuntos extraídos do programa oficial (HD Cursos) — mantidos sem alteração
+const MATERIAS = [
+  {
+    id: "redacao",
+    nome: "Redação",
+    assuntos: [
+      "Assunto Livre"
+    ]
+  },
+  {
+    id: "portugues",
+    nome: "LÍNGUA PORTUGUESA - PRAÇA - PMPE - PRÉ-EDITAL",
+    assuntos: [
+      "1. Compreensão e interpretação de textos.",
+      "2. Tipologias e gêneros textuais.",
+      "3. Ortografia oficial.",
+      "4. Acentuação gráfica.",
+      "5. Emprego das classes de palavras.",
+      "6. Emprego do sinal indicativo de crase.",
+      "7. Sintaxe da oração e do período.",
+      "8. Mecanismos de coesão textual.",
+      "9. Pontuação.",
+      "10. Concordância nominal e verbal.",
+      "11. Regência nominal e verbal.",
+      "12. Colocação pronominal.",
+      "13. Significação das palavras.",
+      "14. Variação linguística.",
+      "15. Redação oficial: Manual de Redação da Presidência da República/2018.",
+      "Assunto Livre"
+    ]
+  },
+  {
+    id: "historia-pe",
+    nome: "HISTÓRIA DE PERNAMBUCO - PRAÇA - PMPE - PRÉ-EDITAL",
+    assuntos: [
+      "1. Ocupação e colonização - Contatos iniciais do europeu com o nativo local, Capitanias Hereditárias, Duarte Coelho.",
+      "2. A importância do açúcar para a economia local.",
+      "3. Formação de Olinda e Recife.",
+      "4. A presença holandesa e o governo de Maurício de Nassau.",
+      "5. Movimentos de resistência e emancipacionistas - Formação de Quilombos, Insurreição Pernambucana (1654), Guerra dos Mascates (1710), Revolução Pernambucana (1817), Confederação do Equador (1824), Guerra dos Cabanos (1835), Revolução Praieira (1848).",
+      "6. Pernambuco e a República.",
+      "7. Manifestações da cultura popular pernambucana – Frevo, Maracatu, culinária, festas populares.",
+      "8. Herança afrodescendente em Pernambuco.",
+      "Assunto Livre"
+    ]
+  },
+  {
+    id: "raciocinio-logico",
+    nome: "RACIOCÍNIO LÓGICO - PRAÇA - PMPE - PRÉ-EDITAL",
+    assuntos: [
+      "1. Compreensão de estruturas lógicas: proposições e conectivos lógicos, quantificadores, falácias.",
+      "2. Lógica de argumentação: analogias, inferências, deduções, equivalência e implicação lógica, argumentos válidos e conclusões.",
+      "3. Diagramas lógicos.",
+      "4. Princípios da contagem, técnicas de contagem, princípio multiplicativo, permutações, arranjos, combinações e probabilidade.",
+      "Assunto Livre"
+    ]
+  },
+  {
+    id: "informatica",
+    nome: "INFORMÁTICA - PRAÇA - PMPE - PRÉ-EDITAL",
+    assuntos: [
+      "1. Conceito de internet e intranet.",
+      "2. Conceitos básicos e modos de utilização de tecnologias, ferramentas, aplicativos e procedimentos associados a internet/intranet.",
+      "3. Conceitos de proteção e segurança.",
+      "4. Procedimentos, aplicativos e dispositivos para armazenamento de dados e para realização de cópia de segurança (backup).",
+      "5. Conceitos de organização e gerenciamento de arquivos, pastas e programas, instalação de periféricos.",
+      "6. Ambientes operacionais: utilização básica do sistema operacional Windows (em português).",
+      "7. Utilização de ferramentas de texto, planilha e apresentação do pacote Microsoft Office 2019 em português (Word, Excel e PowerPoint) e do pacote LibreOffice 7 em português (Writer, Calc e Impress).",
+      "Assunto Livre"
+    ]
+  },
+  {
+    id: "direito-constitucional",
+    nome: "DIREITO CONSTITUCIONAL - PRAÇA - PMPE - PRÉ-EDITAL",
+    assuntos: [
+      "1. Dos princípios fundamentais.",
+      "2. Direitos e garantias fundamentais: direitos e deveres individuais e coletivos; direito à vida, à liberdade, à igualdade, à segurança e à propriedade, direitos sociais, nacionalidade e direitos políticos; remédios constitucionais.",
+      "3. Organização do Estado: organização político-administrativa; repartição de competências; União, Estados Federados e Municípios; Administração Pública: disposições gerais; servidores públicos; dos militares dos Estados, do Distrito Federal e dos Territórios.",
+      "4. Organização dos Poderes: Poder Legislativo; Poder Executivo; Poder Judiciário.",
+      "5. Defesa do Estado e das instituições democráticas.",
+      "6. Súmulas, jurisprudência dominante dos Tribunais Superiores e legislação relacionada com os temas.",
+      "Assunto Livre"
+    ]
+  },
+  {
+    id: "direitos-humanos",
+    nome: "DIREITOS HUMANOS - PRAÇA - PMPE - PRÉ-EDITAL",
+    assuntos: [
+      "1. Teoria geral dos Direitos Humanos: conceito; terminologia; estrutura normativa; fundamento; classificação; especificidades.",
+      "2. Evolução histórica e gerações de direitos humanos.",
+      "3. A natureza jurídica da incorporação de normas internacionais sobre Direitos Humanos ao direito interno brasileiro.",
+      "4. Declaração Universal dos Direitos Humanos (ONU - 1948).",
+      "Assunto Livre"
+    ]
+  },
+  {
+    id: "estatuto-pmpe",
+    nome: "ESTATUTO PMPE - PRAÇA - PMPE - PRÉ-EDITAL",
+    assuntos: [
+      "Assunto Livre"
+    ]
+  },
+  {
+    id: "legislacao-extravagante",
+    nome: "LEGISLAÇÃO EXTRAVAGANTE - PRAÇA - PMPE - PRÉ-EDITAL",
+    assuntos: [
+      "1. Dos Crimes no Estatuto da Criança e do Adolescente (Lei nº 8.069/1990).",
+      "2. Lei n. 13.869/2019 (Lei do Abuso de Autoridade).",
+      "3. Lei n. 9.455/1997 (Lei de Tortura).",
+      "4. Lei n. 11.340/2006 (Lei Maria da Penha).",
+      "5. Lei n. 7.716/1989 (Lei dos Crimes Resultantes de Preconceito de Raça ou de Cor).",
+      "6. Lei n. 9.605/1998 (Lei dos Crimes Ambientais).",
+      "7. Lei n. 8.072/1990 (Lei dos Crimes Hediondos).",
+      "8. Lei n. 11.343/2006 (Lei de Drogas).",
+      "9. Lei Estadual nº 6.783/1974 (Estatuto dos Policiais Militares do Estado de Pernambuco).",
+      "10. Súmulas, jurisprudência dominante dos Tribunais Superiores e legislação relacionada com os temas.",
+      "Assunto Livre"
+    ]
+  }
+];
+
+let usuarioAtual = "jeferson";
+let supabaseClient = null;
+let lancamentos = [];
+
+function configurado(){
+  return SUPABASE_URL.indexOf("COLE_AQUI") === -1 && SUPABASE_ANON_KEY.indexOf("COLE_AQUI") === -1;
+}
+
+function iniciarSupabase(){
+  if(!configurado()){
+    const aviso = document.getElementById('config-aviso');
+    aviso.style.display = "block";
+    aviso.innerHTML = "Conexão com o Supabase ainda não configurada. Edite o arquivo e preencha <code>SUPABASE_URL</code> e <code>SUPABASE_ANON_KEY</code> no início do script (Project Settings → API no painel do Supabase). Até lá os lançamentos ficam desativados.";
+    return false;
+  }
+  // "supabase" aqui é o objeto global criado pelo <script> do CDN — usamos
+  // um nome diferente (supabaseClient) para não conflitar com ele.
+  supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return true;
+}
+
+function selecionarUsuario(id){
+  usuarioAtual = id;
+  document.getElementById('card-jeferson').classList.toggle('ativa', id === 'jeferson');
+  document.getElementById('card-jeferson').classList.toggle('ativo', id === 'jeferson');
+  document.getElementById('card-guilherme').classList.toggle('ativo', id === 'guilherme');
+  document.getElementById('lancando-como-nome').textContent = USUARIOS[id].nome;
+  document.documentElement.style.setProperty('--cor-ativa', USUARIOS[id].cor);
+}
+
+function renderMaterias(){
+  const container = document.getElementById('materias');
+  container.innerHTML = "";
+  MATERIAS.forEach(materia => {
+    const div = document.createElement('div');
+    div.className = "materia";
+    div.id = "materia-" + materia.id;
+
+    const header = document.createElement('div');
+    header.className = "materia-header";
+    header.onclick = () => div.classList.toggle('aberta');
+    header.innerHTML = `<span class="nome">${materia.nome}</span><span class="chev">▾</span>`;
+    div.appendChild(header);
+
+    const lista = document.createElement('div');
+    lista.className = "assunto-lista";
+
+    materia.assuntos.forEach((assunto, idx) => {
+      const linha = document.createElement('div');
+      linha.className = "assunto";
+      const uid = materia.id + "-" + idx;
+      linha.innerHTML = `
+        <div class="titulo">${idx + 1}. ${assunto}</div>
+        <div class="campos">
+          <span class="campo-lbl">Acertos</span>
+          <input type="number" min="0" class="campo-input acertos" id="acertos-${uid}" placeholder="0" />
+          <span class="campo-lbl">Erros</span>
+          <input type="number" min="0" class="campo-input erros" id="erros-${uid}" placeholder="0" />
+          <button class="btn-salvar" onclick="salvarLancamento('${materia.nome.replace(/'/g, "\\'")}', '${assunto.replace(/'/g, "\\'")}', '${uid}', this)">Salvar</button>
+          <span class="status-msg" id="status-${uid}"></span>
+        </div>
+      `;
+      lista.appendChild(linha);
+    });
+
+    div.appendChild(lista);
+    container.appendChild(div);
+  });
+}
+
+async function salvarLancamento(disciplina, assunto, uid, botao){
+  if(!supabaseClient){
+    if(!iniciarSupabase()) return;
+  }
+  const acertosEl = document.getElementById('acertos-' + uid);
+  const errosEl = document.getElementById('erros-' + uid);
+  const statusEl = document.getElementById('status-' + uid);
+  const acertos = parseInt(acertosEl.value || "0", 10);
+  const erros = parseInt(errosEl.value || "0", 10);
+  const total = acertos + erros;
+
+  if(total <= 0){
+    statusEl.textContent = "informe ao menos 1 questão";
+    statusEl.classList.add('erro');
+    return;
+  }
+
+  const aproveitamento = Math.round((acertos / total) * 10000) / 100;
+
+  botao.disabled = true;
+  statusEl.textContent = "salvando…";
+  statusEl.classList.remove('erro');
+
+  const { error } = await supabaseClient.from('questoes_lancamentos').insert({
+    disciplina,
+    assunto,
+    banca: BANCA,
+    qtd_questoes: total,
+    qtd_acertos: acertos,
+    qtd_erros: erros,
+    aproveitamento,
+    usuario: usuarioAtual
+  });
+
+  botao.disabled = false;
+
+  if(error){
+    statusEl.textContent = "erro ao salvar";
+    statusEl.classList.add('erro');
+    console.error(error);
+    return;
+  }
+
+  statusEl.textContent = "salvo ✓";
+  acertosEl.value = "";
+  errosEl.value = "";
+  await carregarDados();
+}
+
+function inicioDoDia(){
+  const d = new Date();
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+function atualizarPlacar(){
+  ["jeferson","guilherme"].forEach(id => {
+    const doUsuario = lancamentos.filter(l => l.usuario === id);
+    const totalQ = doUsuario.reduce((s,l) => s + l.qtd_questoes, 0);
+    const totalAcertos = doUsuario.reduce((s,l) => s + l.qtd_acertos, 0);
+    const totalErros = doUsuario.reduce((s,l) => s + l.qtd_erros, 0);
+    const hojeInicio = inicioDoDia();
+    const hojeQ = doUsuario
+      .filter(l => new Date(l.created_at) >= hojeInicio)
+      .reduce((s,l) => s + l.qtd_questoes, 0);
+
+    document.getElementById(id + '-total-txt').textContent = `${totalQ} / ${META_TOTAL}`;
+    document.getElementById(id + '-total-bar').style.width = Math.min(100, (totalQ / META_TOTAL) * 100) + "%";
+    document.getElementById(id + '-hoje-txt').textContent = `${hojeQ} / ${META_DIARIA}`;
+    document.getElementById(id + '-hoje-bar').style.width = Math.min(100, (hojeQ / META_DIARIA) * 100) + "%";
+    document.getElementById(id + '-acertos').textContent = totalAcertos;
+    document.getElementById(id + '-erros').textContent = totalErros;
+    document.getElementById(id + '-aproveitamento').textContent = totalQ > 0
+      ? (Math.round((totalAcertos / totalQ) * 10000) / 100) + "%"
+      : "—";
+  });
+}
+
+function atualizarFeed(){
+  const el = document.getElementById('feed-lista');
+  if(lancamentos.length === 0){
+    el.className = "feed-vazio";
+    el.textContent = "Nenhum lançamento ainda.";
+    return;
+  }
+  el.className = "";
+  const recentes = [...lancamentos]
+    .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 12);
+
+  el.innerHTML = recentes.map(l => {
+    const nome = USUARIOS[l.usuario] ? USUARIOS[l.usuario].nome : l.usuario;
+    const cor = USUARIOS[l.usuario] ? USUARIOS[l.usuario].cor : "var(--text-dim)";
+    const quando = new Date(l.created_at).toLocaleString('pt-BR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
+    return `
+      <div class="feed-item">
+        <span class="feed-quem" style="color:${cor};">${nome}</span>
+        <span class="feed-detalhe">${l.disciplina} — ${l.assunto}</span>
+        <span class="feed-resultado">${l.qtd_acertos}✓ / ${l.qtd_erros}✗ · ${quando}</span>
+      </div>
+    `;
+  }).join("");
+}
+
+async function carregarDados(){
+  if(!supabaseClient) return;
+  const { data, error } = await supabaseClient
+    .from('questoes_lancamentos')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if(error){
+    console.error(error);
+    return;
+  }
+  lancamentos = data || [];
+  atualizarPlacar();
+  atualizarFeed();
+}
+
+function iniciarContagem(){
+  const hoje = new Date();
+  const diffDias = Math.ceil((DATA_ALVO - hoje) / (1000 * 60 * 60 * 24));
+  const el = document.getElementById('dias-restantes');
+  el.textContent = diffDias > 0 ? `${diffDias} dias restantes` : "dia do desafio!";
+}
+
+// Inicialização
+selecionarUsuario('jeferson');
+renderMaterias();
+iniciarContagem();
+if(iniciarSupabase()){
+  carregarDados();
+}
+</script>
+</body>
+</html>
