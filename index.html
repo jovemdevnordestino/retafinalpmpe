@@ -357,6 +357,10 @@
         <div class="placar-label"><span>Hoje (50)</span><span id="jeferson-hoje-txt">0 / 50</span></div>
         <div class="barra"><div class="barra-fill" id="jeferson-hoje-bar"></div></div>
       </div>
+      <div class="placar-linha">
+        <div class="placar-label"><span>Redações (10)</span><span id="jeferson-redacoes-txt">0 / 10</span></div>
+        <div class="barra"><div class="barra-fill" id="jeferson-redacoes-bar" style="background:var(--good);"></div></div>
+      </div>
       <div class="aproveitamento-mini">
         <div>Acertos <b id="jeferson-acertos">0</b></div>
         <div>Erros <b id="jeferson-erros">0</b></div>
@@ -378,6 +382,10 @@
       <div class="placar-linha">
         <div class="placar-label"><span>Hoje (50)</span><span id="guilherme-hoje-txt">0 / 50</span></div>
         <div class="barra"><div class="barra-fill" id="guilherme-hoje-bar"></div></div>
+      </div>
+      <div class="placar-linha">
+        <div class="placar-label"><span>Redações (10)</span><span id="guilherme-redacoes-txt">0 / 10</span></div>
+        <div class="barra"><div class="barra-fill" id="guilherme-redacoes-bar" style="background:var(--good);"></div></div>
       </div>
       <div class="aproveitamento-mini">
         <div>Acertos <b id="guilherme-acertos">0</b></div>
@@ -416,6 +424,7 @@ window.addEventListener('error', function(ev){
 
 const META_TOTAL = 1500;
 const META_DIARIA = 50;
+const META_REDACOES = 10;
 const BANCA = "Instituto AOCP";
 const DATA_ALVO = new Date('2026-10-11');
 
@@ -560,8 +569,6 @@ function iniciarSupabase(){
     aviso.innerHTML = "Conexão com o Supabase ainda não configurada. Edite o arquivo e preencha <code>SUPABASE_URL</code> e <code>SUPABASE_ANON_KEY</code> no início do script (Project Settings → API no painel do Supabase). Até lá os lançamentos ficam desativados.";
     return false;
   }
-  // "supabase" aqui é o objeto global criado pelo <script> do CDN — usamos
-  // um nome diferente (supabaseClient) para não conflitar com ele.
   supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   return true;
 }
@@ -673,18 +680,34 @@ function inicioDoDia(){
 function atualizarPlacar(){
   ["jeferson","guilherme"].forEach(id => {
     const doUsuario = lancamentos.filter(l => l.usuario === id);
-    const totalQ = doUsuario.reduce((s,l) => s + l.qtd_questoes, 0);
-    const totalAcertos = doUsuario.reduce((s,l) => s + l.qtd_acertos, 0);
-    const totalErros = doUsuario.reduce((s,l) => s + l.qtd_erros, 0);
+    
+    // Separa o que é Redação e o que são Questões normais
+    const redacoesUsuario = doUsuario.filter(l => l.disciplina.toLowerCase() === 'redação');
+    const questoesUsuario = doUsuario.filter(l => l.disciplina.toLowerCase() !== 'redação');
+
+    const totalQ = questoesUsuario.reduce((s,l) => s + l.qtd_questoes, 0);
+    const totalAcertos = questoesUsuario.reduce((s,l) => s + l.qtd_acertos, 0);
+    const totalErros = questoesUsuario.reduce((s,l) => s + l.qtd_erros, 0);
+    
+    // Contagem específica das redações
+    const totalRedacoes = redacoesUsuario.reduce((s,l) => s + l.qtd_questoes, 0);
+
     const hojeInicio = inicioDoDia();
-    const hojeQ = doUsuario
+    const hojeQ = questoesUsuario
       .filter(l => new Date(l.created_at) >= hojeInicio)
       .reduce((s,l) => s + l.qtd_questoes, 0);
 
+    // Atualiza metas de questões
     document.getElementById(id + '-total-txt').textContent = `${totalQ} / ${META_TOTAL}`;
     document.getElementById(id + '-total-bar').style.width = Math.min(100, (totalQ / META_TOTAL) * 100) + "%";
     document.getElementById(id + '-hoje-txt').textContent = `${hojeQ} / ${META_DIARIA}`;
     document.getElementById(id + '-hoje-bar').style.width = Math.min(100, (hojeQ / META_DIARIA) * 100) + "%";
+
+    // Atualiza progresso das redações
+    document.getElementById(id + '-redacoes-txt').textContent = `${totalRedacoes} / ${META_REDACOES}`;
+    document.getElementById(id + '-redacoes-bar').style.width = Math.min(100, (totalRedacoes / META_REDACOES) * 100) + "%";
+
+    // Atualiza acertos, erros e aproveitamento ignorando redações
     document.getElementById(id + '-acertos').textContent = totalAcertos;
     document.getElementById(id + '-erros').textContent = totalErros;
     document.getElementById(id + '-aproveitamento').textContent = totalQ > 0
