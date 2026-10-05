@@ -20,6 +20,7 @@
     --guilherme:#5b8fd6;
     --guilherme-dim:#232f42;
     --good:#5fb98a;
+    --warn:#e2a336;
     --bad:#d3695f;
     --radius:10px;
   }
@@ -172,9 +173,36 @@
     text-align:center;
     color:var(--text-dim);
     font-size:12.5px;
-    margin:12px 0 34px;
+    margin:12px 0 26px;
   }
   .lancando-como b{color:var(--cor-ativa,var(--jeferson));}
+
+  /* ---------- Abas ---------- */
+  .abas{
+    display:flex;
+    gap:8px;
+    margin-bottom:24px;
+    border-bottom:1px solid var(--border);
+    padding-bottom:12px;
+    flex-wrap:wrap;
+  }
+  .aba-btn{
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text-dim);
+    padding:9px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    transition:color .15s ease,border-color .15s ease;
+  }
+  .aba-btn:hover{color:var(--text);}
+  .aba-btn.ativa{
+    color:var(--text);
+    border-color:var(--cor-ativa,var(--jeferson));
+  }
 
   /* ---------- Registrador ---------- */
   h2.secao{
@@ -195,20 +223,20 @@
     display:flex;
     justify-content:space-between;
     align-items:center;
+    gap:12px;
     cursor:pointer;
     user-select:none;
   }
   .materia-header .nome{
     font-weight:600;
     font-size:15.5px;
-    display:flex;
-    align-items:center;
-    gap:10px;
+    flex:1;
   }
   .materia-header .contagem{
     font-family:'JetBrains Mono',monospace;
     font-size:12px;
     color:var(--text-dim);
+    white-space:nowrap;
   }
   .chev{
     color:var(--text-dim);
@@ -254,6 +282,17 @@
   .campo-input:focus{outline:none;border-color:var(--cor-ativa,var(--jeferson));}
   .campo-input.acertos:focus{border-color:var(--good);}
   .campo-input.erros:focus{border-color:var(--bad);}
+  .tema-input{
+    width:160px;
+    background:var(--bg);
+    border:1px dashed var(--border);
+    color:var(--text);
+    border-radius:6px;
+    padding:6px 8px;
+    font-size:12.5px;
+    font-family:'Inter',sans-serif;
+  }
+  .tema-input:focus{outline:none;border-style:solid;border-color:var(--cor-ativa,var(--jeferson));}
   .btn-salvar{
     background:var(--cor-ativa,var(--jeferson));
     color:#12151a;
@@ -275,7 +314,7 @@
   }
   .status-msg.erro{color:var(--bad);}
 
-  /* ---------- Feed ---------- */
+  /* ---------- Feed / Histórico ---------- */
   .feed{
     background:var(--surface);
     border:1px solid var(--border);
@@ -283,6 +322,7 @@
     margin-top:28px;
     padding:6px 0;
   }
+  .feed.sem-margem{margin-top:0;}
   .feed-item{
     padding:11px 18px;
     border-bottom:1px solid var(--border);
@@ -292,7 +332,7 @@
     font-size:13px;
   }
   .feed-item:last-child{border-bottom:none;}
-  .feed-quem{font-weight:600;}
+  .feed-quem{font-weight:600;min-width:72px;}
   .feed-detalhe{color:var(--text-dim);flex:1;}
   .feed-resultado{
     font-family:'JetBrains Mono',monospace;
@@ -301,6 +341,136 @@
     white-space:nowrap;
   }
   .feed-vazio{padding:20px 18px;color:var(--text-dim);font-size:13px;}
+  .btn-mais{
+    display:block;
+    margin:14px auto 0;
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:8px;
+    padding:8px 18px;
+    cursor:pointer;
+    font-size:13px;
+    font-family:'Inter',sans-serif;
+  }
+
+  /* ---------- Desempenho ---------- */
+  .filtros{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 14px;
+    align-items:flex-end;
+    margin-bottom:20px;
+  }
+  .filtro-grupo{display:flex;flex-direction:column;gap:5px;}
+  .filtro-grupo label{font-size:11.5px;color:var(--text-dim);}
+  .filtro{
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:13px;
+    font-family:'Inter',sans-serif;
+    max-width:280px;
+  }
+  .filtro.curto{width:80px;}
+  .filtro-check{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:12.5px;
+    color:var(--text-dim);
+    padding-bottom:9px;
+    cursor:pointer;
+  }
+  .resumo-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:12px;
+    margin-bottom:28px;
+  }
+  .resumo-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    cursor:pointer;
+    transition:border-color .2s ease;
+  }
+  .resumo-card:hover{border-color:#3a4250;}
+  .resumo-card.sel{border-color:var(--text-dim);}
+  .resumo-nome{
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:10px;
+    line-height:1.3;
+  }
+  .desemp-linha{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:12px;
+    margin-top:7px;
+  }
+  .desemp-linha .quem{width:70px;color:var(--text-dim);flex:none;}
+  .desemp-linha .barra{flex:1;}
+  .desemp-linha .num{
+    font-family:'JetBrains Mono',monospace;
+    min-width:120px;
+    text-align:right;
+    color:var(--text-dim);
+    font-size:11.5px;
+    flex:none;
+  }
+  .desemp-linha .num b{color:var(--text);}
+  .desemp-item{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:3px solid var(--st,var(--border));
+    border-radius:var(--radius);
+    padding:14px 18px;
+    margin-bottom:10px;
+  }
+  .desemp-item.livre{border-style:dashed;border-left-style:solid;}
+  .desemp-topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .desemp-titulo{
+    font-size:13.5px;
+    margin-bottom:3px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+  }
+  .desemp-materia{font-size:11.5px;color:var(--text-dim);margin-bottom:4px;}
+  .pill{
+    flex:none;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:20px;
+    border:1px solid var(--st,var(--border));
+    color:var(--st,var(--text-dim));
+  }
+  .legenda{
+    font-size:12px;
+    color:var(--text-dim);
+    margin:-8px 0 18px;
+    line-height:1.6;
+  }
+  .legenda i{
+    display:inline-block;
+    width:9px;height:9px;
+    border-radius:50%;
+    margin:0 4px 0 10px;
+    vertical-align:middle;
+  }
 
   .config-aviso{
     background:var(--surface-2);
@@ -324,6 +494,9 @@
     .duelo{grid-template-columns:1fr;gap:10px;}
     .vs{display:none;}
     .top h1{font-size:26px;}
+    .desemp-linha .num{min-width:96px;}
+    .tema-input{width:100%;}
+    .feed-item{flex-wrap:wrap;}
   }
 </style>
 </head>
@@ -342,7 +515,7 @@
 
   <div id="config-aviso" class="config-aviso" style="display:none;"></div>
 
-  <!-- Placar de duelo -->
+  <!-- Placar de duelo (sempre visível) -->
   <div class="duelo">
     <div class="jogador ativo" id="card-jeferson" style="--cor:var(--jeferson);" onclick="selecionarUsuario('jeferson')">
       <div class="nome-row">
@@ -397,17 +570,98 @@
 
   <p class="lancando-como">Lançando questões como <b id="lancando-como-nome">Jeferson</b> — clique no seu card acima para trocar</p>
 
-  <h2 class="secao">Registrar questões por assunto</h2>
-  <div id="materias"></div>
+  <!-- Navegação por abas -->
+  <nav class="abas">
+    <button class="aba-btn ativa" id="btn-aba-registrar" onclick="mostrarAba('registrar')">Registrar questões</button>
+    <button class="aba-btn" id="btn-aba-desempenho" onclick="mostrarAba('desempenho')">Desempenho por assunto</button>
+    <button class="aba-btn" id="btn-aba-historico" onclick="mostrarAba('historico')">Histórico</button>
+  </nav>
 
-  <div class="feed">
-    <div id="feed-lista" class="feed-vazio">Nenhum lançamento ainda.</div>
-  </div>
+  <!-- ABA 1: Registrar (principal) -->
+  <section id="aba-registrar">
+    <h2 class="secao">Registrar questões por assunto</h2>
+    <div id="materias"></div>
+    <div class="feed">
+      <div id="feed-lista" class="feed-vazio">Nenhum lançamento ainda.</div>
+    </div>
+  </section>
+
+  <!-- ABA 2: Desempenho por assunto -->
+  <section id="aba-desempenho" style="display:none;">
+    <h2 class="secao">Desempenho por assunto</h2>
+
+    <div class="filtros">
+      <div class="filtro-grupo">
+        <label for="f-materia">Matéria</label>
+        <select id="f-materia" class="filtro" onchange="renderDesempenho()"></select>
+      </div>
+      <div class="filtro-grupo">
+        <label for="f-jogador">Jogador</label>
+        <select id="f-jogador" class="filtro" onchange="renderDesempenho()">
+          <option value="ambos">Ambos</option>
+          <option value="jeferson">Jeferson</option>
+          <option value="guilherme">Guilherme</option>
+        </select>
+      </div>
+      <div class="filtro-grupo">
+        <label for="f-ordem">Ordenar por</label>
+        <select id="f-ordem" class="filtro" onchange="renderDesempenho()">
+          <option value="pior">Menor aproveitamento (revisar primeiro)</option>
+          <option value="erros">Mais erros</option>
+          <option value="poucas">Menos questões feitas</option>
+          <option value="melhor">Maior aproveitamento</option>
+          <option value="edital">Ordem do edital</option>
+        </select>
+      </div>
+      <div class="filtro-grupo">
+        <label for="f-min">Mín. questões</label>
+        <input type="number" id="f-min" class="filtro curto" min="0" value="1" onchange="renderDesempenho()" />
+      </div>
+      <label class="filtro-check">
+        <input type="checkbox" id="f-zerados" onchange="renderDesempenho()" />
+        incluir assuntos ainda não estudados
+      </label>
+    </div>
+
+    <h2 class="secao" style="font-size:16px;">Visão por matéria <span style="font-size:12px;color:var(--text-dim);font-family:'Inter',sans-serif;font-weight:400;">(clique para filtrar)</span></h2>
+    <div id="resumo-materias" class="resumo-grid"></div>
+
+    <h2 class="secao" style="font-size:16px;">Assuntos</h2>
+    <p class="legenda">
+      <i style="background:var(--bad);"></i>abaixo de 60%
+      <i style="background:var(--warn);"></i>60% a 79%
+      <i style="background:var(--good);"></i>80% ou mais
+      <i style="background:var(--text-dim);"></i>sem questões
+      — "Livre › tema" são temas que você digitou em "Assunto Livre"; "Livre (sem tema)" são lançamentos livres sem tema.
+    </p>
+    <div id="desempenho-lista"></div>
+  </section>
+
+  <!-- ABA 3: Histórico -->
+  <section id="aba-historico" style="display:none;">
+    <h2 class="secao">Histórico de lançamentos</h2>
+    <div class="filtros">
+      <div class="filtro-grupo">
+        <label for="h-jogador">Jogador</label>
+        <select id="h-jogador" class="filtro" onchange="resetHistorico()">
+          <option value="">Ambos</option>
+          <option value="jeferson">Jeferson</option>
+          <option value="guilherme">Guilherme</option>
+        </select>
+      </div>
+      <div class="filtro-grupo">
+        <label for="h-materia">Matéria</label>
+        <select id="h-materia" class="filtro" onchange="resetHistorico()"></select>
+      </div>
+    </div>
+    <div class="feed sem-margem"><div id="historico-lista" class="feed-vazio">Nenhum lançamento ainda.</div></div>
+    <button class="btn-mais" id="btn-mais-hist" onclick="maisHistorico()" style="display:none;">Mostrar mais</button>
+  </section>
 
 </div>
 
 <script>
-/* ====== CONFIGURAÇÃO SUPABASE — preencha aqui ====== */
+/* ====== CONFIGURAÇÃO SUPABASE ====== */
 const SUPABASE_URL = "https://fzpfebjklshecoeevtra.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6cGZlYmprbHNoZWNvZWV2dHJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkxNDEyOTMsImV4cCI6MjEwNDcxNzI5M30.bJ1rHtSgXeEQBPgNYUNkAMkeKD7w5l7KAx1HUufm-T4";
 /* ==================================================== */
@@ -426,20 +680,26 @@ const META_TOTAL = 1500;
 const META_DIARIA = 50;
 const META_REDACOES = 10;
 const BANCA = "Instituto AOCP";
-const DATA_ALVO = new Date('2026-10-11');
+const DATA_ALVO = new Date(2026, 9, 11); // 11 de outubro de 2026 (horário local)
+
+const LIMIAR_BOM = 80;
+const LIMIAR_MEDIO = 60;
+const SEP_TEMA = " › ";
 
 const USUARIOS = {
   jeferson: { nome: "Jeferson", cor: "var(--jeferson)" },
   guilherme: { nome: "Guilherme", cor: "var(--guilherme)" }
 };
 
-// Matérias e assuntos extraídos do programa oficial (HD Cursos) — mantidos sem alteração
+// Matérias e assuntos do programa atualizado
+// ATENÇÃO: não altere os textos dos assuntos nem a disciplina ("nome"):
+// eles são a chave que liga os lançamentos antigos do banco ao desempenho.
 const MATERIAS = [
   {
     id: "redacao",
     nome: "Redação",
     assuntos: [
-      "Assunto Livre"
+      "1. Assunto Livre"
     ]
   },
   {
@@ -448,20 +708,23 @@ const MATERIAS = [
     assuntos: [
       "1. Compreensão e interpretação de textos.",
       "2. Tipologias e gêneros textuais.",
-      "3. Ortografia oficial.",
-      "4. Acentuação gráfica.",
-      "5. Emprego das classes de palavras.",
-      "6. Emprego do sinal indicativo de crase.",
-      "7. Sintaxe da oração e do período.",
-      "8. Mecanismos de coesão textual.",
-      "9. Pontuação.",
-      "10. Concordância nominal e verbal.",
-      "11. Regência nominal e verbal.",
-      "12. Colocação pronominal.",
-      "13. Significação das palavras.",
-      "14. Variação linguística.",
-      "15. Redação oficial: Manual de Redação da Presidência da República/2018.",
-      "Assunto Livre"
+      "3. Figuras de linguagem.",
+      "4. Relações semânticas estabelecidas entre orações, períodos ou parágrafos (oposição/contraste, conclusão, concessão, causalidade, adição, alternância etc.).",
+      "5. Ortografia oficial.",
+      "6. Acentuação gráfica.",
+      "7. Emprego das classes de palavras.",
+      "8. Emprego do sinal indicativo de crase.",
+      "9. Sintaxe da oração (termos essenciais, termos integrantes e termos acessórios da oração e suas funções no texto) e do período (período simples e período composto por coordenação e por subordinação).",
+      "10. Funções do “que” e do “se”.",
+      "11. Mecanismos de coesão textual.",
+      "12. Emprego dos sinais de pontuação e suas funções no texto.",
+      "13. Concordância nominal e verbal.",
+      "14. Regência nominal e verbal.",
+      "15. Colocação pronominal.",
+      "16. Processos de formação de palavras.",
+      "17. Significação das palavras.",
+      "18. Variação linguística.",
+      "19. Assunto Livre"
     ]
   },
   {
@@ -473,10 +736,10 @@ const MATERIAS = [
       "3. Formação de Olinda e Recife.",
       "4. A presença holandesa e o governo de Maurício de Nassau.",
       "5. Movimentos de resistência e emancipacionistas - Formação de Quilombos, Insurreição Pernambucana (1654), Guerra dos Mascates (1710), Revolução Pernambucana (1817), Confederação do Equador (1824), Guerra dos Cabanos (1835), Revolução Praieira (1848).",
-      "6. Pernambuco e a República.",
+      "6. Pernambuco durante o período republicano.",
       "7. Manifestações da cultura popular pernambucana – Frevo, Maracatu, culinária, festas populares.",
-      "8. Herança afrodescendente em Pernambuco.",
-      "Assunto Livre"
+      "8. Aspectos afro-brasileiros em Pernambuco.",
+      "9. Assunto Livre"
     ]
   },
   {
@@ -487,7 +750,7 @@ const MATERIAS = [
       "2. Lógica de argumentação: analogias, inferências, deduções, equivalência e implicação lógica, argumentos válidos e conclusões.",
       "3. Diagramas lógicos.",
       "4. Princípios da contagem, técnicas de contagem, princípio multiplicativo, permutações, arranjos, combinações e probabilidade.",
-      "Assunto Livre"
+      "5. Assunto Livre"
     ]
   },
   {
@@ -495,13 +758,13 @@ const MATERIAS = [
     nome: "INFORMÁTICA - PRAÇA - PMPE - PRÉ-EDITAL",
     assuntos: [
       "1. Conceito de internet e intranet.",
-      "2. Conceitos básicos e modos de utilização de tecnologias, ferramentas, aplicativos e procedimentos associados a internet/intranet.",
-      "3. Conceitos de proteção e segurança.",
-      "4. Procedimentos, aplicativos e dispositivos para armazenamento de dados e para realização de cópia de segurança (backup).",
-      "5. Conceitos de organização e gerenciamento de arquivos, pastas e programas, instalação de periféricos.",
-      "6. Ambientes operacionais: utilização básica do sistema operacional Windows (em português).",
-      "7. Utilização de ferramentas de texto, planilha e apresentação do pacote Microsoft Office 2019 em português (Word, Excel e PowerPoint) e do pacote LibreOffice 7 em português (Writer, Calc e Impress).",
-      "Assunto Livre"
+      "2. Conceitos básicos e modos de utilização de tecnologias, ferramentas, aplicativos e procedimentos associados à internet/intranet, incluindo navegadores, serviços de internet e computação em nuvem.",
+      "3. Conceitos de proteção e segurança da informação, incluindo ameaças, vulnerabilidades, malwares, phishing, criptografia, autenticação e boas práticas de segurança.",
+      "4. Procedimentos, aplicativos e dispositivos para armazenamento de dados e para realização de cópia de segurança (backup), incluindo dispositivos de armazenamento, tipos de backup e restauração de dados.",
+      "5. Conceitos de organização e gerenciamento de arquivos, pastas e programas, incluindo criação, nomeação, renomeação, cópia, movimentação e exclusão. Organização de computadores: processador, memórias, dispositivos de armazenamento, dispositivos de entrada e saída e periféricos. Conceitos básicos de instalação, configuração e utilização de periféricos.",
+      "6. Ambientes operacionais: utilização básica do sistema operacional Windows 11 (em português), incluindo gerenciamento de arquivos, pastas, programas, configurações e recursos do sistema, Painel de Controle e comandos do Prompt de Comando.",
+      "7. Utilização de ferramentas de texto, planilha e apresentação do pacote Microsoft Office 2019 em português (Word, Excel e PowerPoint) e do pacote LibreOffice 7 em português (Writer, Calc e Impress), incluindo edição e formatação de documentos, fórmulas e funções, gráficos, tabelas, apresentações e exportação de arquivos.",
+      "8. Assunto Livre"
     ]
   },
   {
@@ -511,10 +774,10 @@ const MATERIAS = [
       "1. Dos princípios fundamentais.",
       "2. Direitos e garantias fundamentais: direitos e deveres individuais e coletivos; direito à vida, à liberdade, à igualdade, à segurança e à propriedade, direitos sociais, nacionalidade e direitos políticos; remédios constitucionais.",
       "3. Organização do Estado: organização político-administrativa; repartição de competências; União, Estados Federados e Municípios; Administração Pública: disposições gerais; servidores públicos; dos militares dos Estados, do Distrito Federal e dos Territórios.",
-      "4. Organização dos Poderes: Poder Legislativo; Poder Executivo; Poder Judiciário.",
+      "4. Organização dos Poderes: Poder Legislativo; Poder Executivo; Poder Judiciário. Funções Essenciais à Justiça.",
       "5. Defesa do Estado e das instituições democráticas.",
       "6. Súmulas, jurisprudência dominante dos Tribunais Superiores e legislação relacionada com os temas.",
-      "Assunto Livre"
+      "7. Assunto Livre"
     ]
   },
   {
@@ -523,33 +786,37 @@ const MATERIAS = [
     assuntos: [
       "1. Teoria geral dos Direitos Humanos: conceito; terminologia; estrutura normativa; fundamento; classificação; especificidades.",
       "2. Evolução histórica e gerações de direitos humanos.",
-      "3. A natureza jurídica da incorporação de normas internacionais sobre Direitos Humanos ao direito interno brasileiro.",
+      "3. Incorporação dos tratados internacionais de Direitos Humanos ao ordenamento jurídico brasileiro: Constituição Federal, art. 5º, §§ 2º e 3º; hierarquia normativa dos tratados de Direitos Humanos.",
       "4. Declaração Universal dos Direitos Humanos (ONU - 1948).",
-      "Assunto Livre"
+      "5. Convenção Americana sobre Direitos Humanos – Pacto de San José da Costa Rica (Decreto nº 678/1992).",
+      "6. Estatuto da Criança e do Adolescente (Lei nº 8.069/1990): direitos e garantias fundamentais; prática de ato infracional; direitos individuais e garantias do adolescente; apreensão e apresentação; atuação policial; Conselho Tutelar; crimes e infrações administrativas pertinentes à atividade policial.",
+      "7. Assunto Livre"
     ]
   },
   {
     id: "estatuto-pmpe",
     nome: "ESTATUTO PMPE - PRAÇA - PMPE - PRÉ-EDITAL",
     assuntos: [
-      "Assunto Livre"
+      "14. Lei Estadual nº 6.783/1974 (Estatuto dos Policiais Militares do Estado de Pernambuco).",
+      "15. Assunto Livre"
     ]
   },
   {
     id: "legislacao-extravagante",
     nome: "LEGISLAÇÃO EXTRAVAGANTE - PRAÇA - PMPE - PRÉ-EDITAL",
     assuntos: [
-      "1. Dos Crimes no Estatuto da Criança e do Adolescente (Lei nº 8.069/1990).",
-      "2. Lei n. 13.869/2019 (Lei do Abuso de Autoridade).",
-      "3. Lei n. 9.455/1997 (Lei de Tortura).",
-      "4. Lei n. 11.340/2006 (Lei Maria da Penha).",
-      "5. Lei n. 7.716/1989 (Lei dos Crimes Resultantes de Preconceito de Raça ou de Cor).",
-      "6. Lei n. 9.605/1998 (Lei dos Crimes Ambientais).",
-      "7. Lei n. 8.072/1990 (Lei dos Crimes Hediondos).",
-      "8. Lei n. 11.343/2006 (Lei de Drogas).",
-      "9. Lei Estadual nº 6.783/1974 (Estatuto dos Policiais Militares do Estado de Pernambuco).",
-      "10. Súmulas, jurisprudência dominante dos Tribunais Superiores e legislação relacionada com os temas.",
-      "Assunto Livre"
+      "7. Lei n. 13.869/2019 (Lei do Abuso de Autoridade).",
+      "8. Lei n. 9.455/1997 (Lei de Tortura).",
+      "9. Lei n. 11.340/2006 (Lei Maria da Penha).",
+      "10. Lei n. 7.716/1989 (Lei dos Crimes resultantes de Preconceito de Raça ou de Cor).",
+      "11. Lei n. 9.605/1998 (Lei dos Crimes Ambientais).",
+      "12. Lei n. 8.072/1990 (Lei dos Crimes Hediondos).",
+      "13. Lei n. 11.343/2006 (Lei de Drogas).",
+      "15. Lei nº 10.741/2003 – Estatuto da Pessoa Idosa: disposições pertinentes à atuação policial e crimes em espécie.",
+      "16. Lei Federal nº 12.852/2013 - Estatuto da Juventude (Acrescido pelo art. 1° da Lei n° 18.926, de 8 de outubro de 2025.).",
+      "17. Lei Federal nº 11.340/2006 - Lei Maria da Penha (Acrescido pelo art. 1° da Lei n° 18.926, de 8 de outubro de 2025.).",
+      "18. Súmulas, jurisprudência dominante dos Tribunais Superiores e legislação relacionada com os temas.",
+      "19. Assunto Livre"
     ]
   }
 ];
@@ -557,7 +824,46 @@ const MATERIAS = [
 let usuarioAtual = "jeferson";
 let supabaseClient = null;
 let lancamentos = [];
+let histLimite = 50;
 
+// Ordem de cada assunto no edital (para ordenar e identificar assuntos conhecidos)
+const ORDEM = {};
+MATERIAS.forEach((m, mi) => m.assuntos.forEach((a, ai) => { ORDEM[m.nome + "|" + a.trim()] = mi * 1000 + ai; }));
+
+/* ---------- Utilidades ---------- */
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function norm(s){
+  return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+}
+function nomeCurto(n){
+  return n.replace(/\s*-\s*PRAÇA.*$/i, '');
+}
+function ehRedacao(l){
+  return String(l.disciplina || '').toLowerCase() === 'redação';
+}
+function parseAssunto(l){
+  const partes = String(l.assunto || '').split('›');
+  const base = partes[0].trim();
+  const tema = partes.length > 1 ? partes.slice(1).join(' ').trim() : '';
+  const livre = /assunto livre/i.test(base);
+  return { base, tema, livre };
+}
+function pctTxt(a, e){
+  const t = a + e;
+  return t ? Math.round((a / t) * 100) + '%' : '—';
+}
+function corStatus(a, e){
+  const t = a + e;
+  if(!t) return 'var(--text-dim)';
+  const p = (a / t) * 100;
+  if(p >= LIMIAR_BOM) return 'var(--good)';
+  if(p >= LIMIAR_MEDIO) return 'var(--warn)';
+  return 'var(--bad)';
+}
+
+/* ---------- Supabase ---------- */
 function configurado(){
   return SUPABASE_URL.indexOf("COLE_AQUI") === -1 && SUPABASE_ANON_KEY.indexOf("COLE_AQUI") === -1;
 }
@@ -573,15 +879,71 @@ function iniciarSupabase(){
   return true;
 }
 
+// O Supabase devolve no máximo 1000 linhas por consulta.
+// Buscamos em páginas para nunca perder lançamentos antigos.
+async function buscarTodos(){
+  const PASSO = 1000;
+  let todos = [];
+  let de = 0;
+  while(true){
+    const { data, error } = await supabaseClient
+      .from('questoes_lancamentos')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(de, de + PASSO - 1);
+    if(error){
+      console.error(error);
+      return null;
+    }
+    todos = todos.concat(data || []);
+    if(!data || data.length < PASSO) break;
+    de += PASSO;
+  }
+  return todos;
+}
+
+async function carregarDados(){
+  if(!supabaseClient) return;
+  const dados = await buscarTodos();
+  if(dados === null){
+    const aviso = document.getElementById('config-aviso');
+    aviso.style.display = "block";
+    aviso.innerHTML = "Não consegui carregar os lançamentos do banco. Seus dados continuam salvos; recarregue a página para tentar de novo.";
+    return;
+  }
+  lancamentos = dados;
+  atualizarTudo();
+}
+
+function atualizarTudo(){
+  atualizarPlacar();
+  atualizarFeed();
+  atualizarContagens();
+  atualizarSugestoesTema();
+  renderDesempenho();
+  renderHistorico();
+}
+
+/* ---------- Navegação ---------- */
+function mostrarAba(nome){
+  ['registrar','desempenho','historico'].forEach(a => {
+    document.getElementById('aba-' + a).style.display = (a === nome) ? 'block' : 'none';
+    document.getElementById('btn-aba-' + a).classList.toggle('ativa', a === nome);
+  });
+  if(nome === 'desempenho') renderDesempenho();
+  if(nome === 'historico') renderHistorico();
+}
+
 function selecionarUsuario(id){
   usuarioAtual = id;
-  document.getElementById('card-jeferson').classList.toggle('ativa', id === 'jeferson');
   document.getElementById('card-jeferson').classList.toggle('ativo', id === 'jeferson');
   document.getElementById('card-guilherme').classList.toggle('ativo', id === 'guilherme');
   document.getElementById('lancando-como-nome').textContent = USUARIOS[id].nome;
   document.documentElement.style.setProperty('--cor-ativa', USUARIOS[id].cor);
+  atualizarContagens();
 }
 
+/* ---------- Registrar ---------- */
 function renderMaterias(){
   const container = document.getElementById('materias');
   container.innerHTML = "";
@@ -593,8 +955,12 @@ function renderMaterias(){
     const header = document.createElement('div');
     header.className = "materia-header";
     header.onclick = () => div.classList.toggle('aberta');
-    header.innerHTML = `<span class="nome">${materia.nome}</span><span class="chev">▾</span>`;
+    header.innerHTML = `<span class="nome">${esc(materia.nome)}</span><span class="contagem" id="contagem-${materia.id}"></span><span class="chev">▾</span>`;
     div.appendChild(header);
+
+    const dl = document.createElement('datalist');
+    dl.id = "temas-" + materia.id;
+    div.appendChild(dl);
 
     const lista = document.createElement('div');
     lista.className = "assunto-lista";
@@ -603,17 +969,23 @@ function renderMaterias(){
       const linha = document.createElement('div');
       linha.className = "assunto";
       const uid = materia.id + "-" + idx;
+      const livre = /assunto livre/i.test(assunto);
+      const placeholderTema = materia.id === 'redacao' ? 'tema da redação (opcional)' : 'tema (opcional)';
       linha.innerHTML = `
-        <div class="titulo">${idx + 1}. ${assunto}</div>
+        <div class="titulo">${esc(assunto)}</div>
         <div class="campos">
+          ${livre ? `<input type="text" class="tema-input" id="tema-${uid}" list="temas-${materia.id}" placeholder="${placeholderTema}" maxlength="60" autocomplete="off" />` : ''}
           <span class="campo-lbl">Acertos</span>
           <input type="number" min="0" class="campo-input acertos" id="acertos-${uid}" placeholder="0" />
           <span class="campo-lbl">Erros</span>
           <input type="number" min="0" class="campo-input erros" id="erros-${uid}" placeholder="0" />
-          <button class="btn-salvar" onclick="salvarLancamento('${materia.nome.replace(/'/g, "\\'")}', '${assunto.replace(/'/g, "\\'")}', '${uid}', this)">Salvar</button>
+          <button class="btn-salvar" type="button">Salvar</button>
           <span class="status-msg" id="status-${uid}"></span>
         </div>
       `;
+      linha.querySelector('.btn-salvar').addEventListener('click', function(){
+        salvarLancamento(materia.nome, assunto, uid, this);
+      });
       lista.appendChild(linha);
     });
 
@@ -629,15 +1001,20 @@ async function salvarLancamento(disciplina, assunto, uid, botao){
   const acertosEl = document.getElementById('acertos-' + uid);
   const errosEl = document.getElementById('erros-' + uid);
   const statusEl = document.getElementById('status-' + uid);
+  const temaEl = document.getElementById('tema-' + uid);
   const acertos = parseInt(acertosEl.value || "0", 10);
   const erros = parseInt(errosEl.value || "0", 10);
   const total = acertos + erros;
 
-  if(total <= 0){
+  if(!(total > 0) || acertos < 0 || erros < 0){
     statusEl.textContent = "informe ao menos 1 questão";
     statusEl.classList.add('erro');
     return;
   }
+
+  // Tema opcional só existe nas linhas de "Assunto Livre"
+  const tema = temaEl ? temaEl.value.replace(/›/g, '').replace(/\s+/g, ' ').trim() : '';
+  const assuntoFinal = tema ? assunto + SEP_TEMA + tema : assunto;
 
   const aproveitamento = Math.round((acertos / total) * 10000) / 100;
 
@@ -647,7 +1024,7 @@ async function salvarLancamento(disciplina, assunto, uid, botao){
 
   const { error } = await supabaseClient.from('questoes_lancamentos').insert({
     disciplina,
-    assunto,
+    assunto: assuntoFinal,
     banca: BANCA,
     qtd_questoes: total,
     qtd_acertos: acertos,
@@ -668,6 +1045,7 @@ async function salvarLancamento(disciplina, assunto, uid, botao){
   statusEl.textContent = "salvo ✓";
   acertosEl.value = "";
   errosEl.value = "";
+  if(temaEl) temaEl.value = "";
   await carregarDados();
 }
 
@@ -680,15 +1058,15 @@ function inicioDoDia(){
 function atualizarPlacar(){
   ["jeferson","guilherme"].forEach(id => {
     const doUsuario = lancamentos.filter(l => l.usuario === id);
-    
+
     // Separa o que é Redação e o que são Questões normais
-    const redacoesUsuario = doUsuario.filter(l => l.disciplina.toLowerCase() === 'redação');
-    const questoesUsuario = doUsuario.filter(l => l.disciplina.toLowerCase() !== 'redação');
+    const redacoesUsuario = doUsuario.filter(l => ehRedacao(l));
+    const questoesUsuario = doUsuario.filter(l => !ehRedacao(l));
 
     const totalQ = questoesUsuario.reduce((s,l) => s + l.qtd_questoes, 0);
     const totalAcertos = questoesUsuario.reduce((s,l) => s + l.qtd_acertos, 0);
     const totalErros = questoesUsuario.reduce((s,l) => s + l.qtd_erros, 0);
-    
+
     // Contagem específica das redações
     const totalRedacoes = redacoesUsuario.reduce((s,l) => s + l.qtd_questoes, 0);
 
@@ -716,6 +1094,51 @@ function atualizarPlacar(){
   });
 }
 
+// Mostra, no cabeçalho de cada matéria, o total do usuário que está lançando
+function atualizarContagens(){
+  MATERIAS.forEach(m => {
+    const el = document.getElementById('contagem-' + m.id);
+    if(!el) return;
+    const doUser = lancamentos.filter(l => l.usuario === usuarioAtual && l.disciplina === m.nome);
+    const a = doUser.reduce((s,l) => s + l.qtd_acertos, 0);
+    const e = doUser.reduce((s,l) => s + l.qtd_erros, 0);
+    el.textContent = (a + e) > 0
+      ? (m.id === 'redacao' ? (a + e) + ' feitas' : (a + e) + ' q · ' + pctTxt(a, e))
+      : '';
+  });
+}
+
+// Sugere temas já usados (evita "Crase" e "crase" virarem temas diferentes por digitação)
+function atualizarSugestoesTema(){
+  MATERIAS.forEach(m => {
+    const dl = document.getElementById('temas-' + m.id);
+    if(!dl) return;
+    const vistos = {};
+    lancamentos.forEach(l => {
+      if(l.disciplina !== m.nome) return;
+      const p = parseAssunto(l);
+      if(p.livre && p.tema){
+        const k = norm(p.tema);
+        if(!vistos[k]) vistos[k] = p.tema;
+      }
+    });
+    dl.innerHTML = Object.values(vistos).sort((a,b) => a.localeCompare(b, 'pt-BR'))
+      .map(t => `<option value="${esc(t)}"></option>`).join('');
+  });
+}
+
+function linhaFeed(l){
+  const nome = USUARIOS[l.usuario] ? USUARIOS[l.usuario].nome : l.usuario;
+  const cor = USUARIOS[l.usuario] ? USUARIOS[l.usuario].cor : "var(--text-dim)";
+  const quando = new Date(l.created_at).toLocaleString('pt-BR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
+  return `
+    <div class="feed-item">
+      <span class="feed-quem" style="color:${cor};">${esc(nome)}</span>
+      <span class="feed-detalhe">${esc(nomeCurto(l.disciplina))} — ${esc(l.assunto)}</span>
+      <span class="feed-resultado">${l.qtd_acertos}✓ / ${l.qtd_erros}✗ · ${quando}</span>
+    </div>`;
+}
+
 function atualizarFeed(){
   const el = document.getElementById('feed-lista');
   if(lancamentos.length === 0){
@@ -727,37 +1150,210 @@ function atualizarFeed(){
   const recentes = [...lancamentos]
     .sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
     .slice(0, 12);
-
-  el.innerHTML = recentes.map(l => {
-    const nome = USUARIOS[l.usuario] ? USUARIOS[l.usuario].nome : l.usuario;
-    const cor = USUARIOS[l.usuario] ? USUARIOS[l.usuario].cor : "var(--text-dim)";
-    const quando = new Date(l.created_at).toLocaleString('pt-BR', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
-    return `
-      <div class="feed-item">
-        <span class="feed-quem" style="color:${cor};">${nome}</span>
-        <span class="feed-detalhe">${l.disciplina} — ${l.assunto}</span>
-        <span class="feed-resultado">${l.qtd_acertos}✓ / ${l.qtd_erros}✗ · ${quando}</span>
-      </div>
-    `;
-  }).join("");
+  el.innerHTML = recentes.map(linhaFeed).join("");
 }
 
-async function carregarDados(){
-  if(!supabaseClient) return;
-  const { data, error } = await supabaseClient
-    .from('questoes_lancamentos')
-    .select('*')
-    .order('created_at', { ascending: false });
+/* ---------- Desempenho por assunto ---------- */
+function montarFiltroMaterias(){
+  const sel = document.getElementById('f-materia');
+  sel.innerHTML = '<option value="">Todas as matérias</option>' +
+    MATERIAS.filter(m => m.id !== 'redacao')
+      .map(m => `<option value="${esc(m.nome)}">${esc(nomeCurto(m.nome))}</option>`).join('');
 
-  if(error){
-    console.error(error);
+  const selH = document.getElementById('h-materia');
+  selH.innerHTML = '<option value="">Todas as matérias</option>' +
+    MATERIAS.map(m => `<option value="${esc(m.nome)}">${esc(nomeCurto(m.nome))}</option>`).join('');
+}
+
+// Agrega lançamentos por assunto. "Assunto Livre" é separado por tema.
+function agregarAssuntos(filtroMateria, incluirZerados){
+  const mapa = {};
+
+  lancamentos.forEach(l => {
+    if(ehRedacao(l)) return;
+    if(!USUARIOS[l.usuario]) return;
+    if(filtroMateria && l.disciplina !== filtroMateria) return;
+
+    const p = parseAssunto(l);
+    let chave, rotulo;
+    if(p.livre){
+      chave = l.disciplina + '|livre|' + (p.tema ? norm(p.tema) : '');
+      rotulo = p.tema ? 'Livre › ' + p.tema : 'Livre (sem tema)';
+    } else {
+      chave = l.disciplina + '|' + p.base;
+      rotulo = p.base;
+    }
+    if(!mapa[chave]){
+      const ord = ORDEM[l.disciplina + '|' + p.base];
+      mapa[chave] = {
+        disciplina: l.disciplina,
+        rotulo,
+        livre: p.livre,
+        ordem: (ord === undefined ? 99999 : ord),
+        jeferson: { a: 0, e: 0 },
+        guilherme: { a: 0, e: 0 }
+      };
+    }
+    mapa[chave][l.usuario].a += l.qtd_acertos;
+    mapa[chave][l.usuario].e += l.qtd_erros;
+  });
+
+  if(incluirZerados){
+    MATERIAS.forEach(m => {
+      if(m.id === 'redacao') return;
+      if(filtroMateria && m.nome !== filtroMateria) return;
+      m.assuntos.forEach((a, ai) => {
+        if(/assunto livre/i.test(a)) return;
+        const chave = m.nome + '|' + a.trim();
+        if(!mapa[chave]){
+          mapa[chave] = {
+            disciplina: m.nome, rotulo: a.trim(), livre: false,
+            ordem: ORDEM[m.nome + '|' + a.trim()],
+            jeferson: { a: 0, e: 0 }, guilherme: { a: 0, e: 0 }
+          };
+        }
+      });
+    });
+  }
+  return Object.values(mapa);
+}
+
+function statsDoItem(item, jogador){
+  if(jogador === 'jeferson') return item.jeferson;
+  if(jogador === 'guilherme') return item.guilherme;
+  return { a: item.jeferson.a + item.guilherme.a, e: item.jeferson.e + item.guilherme.e };
+}
+
+function linhaBarra(nome, cor, x){
+  const t = x.a + x.e;
+  const p = t ? (x.a / t) * 100 : 0;
+  return `<div class="desemp-linha">
+    <span class="quem" style="color:${cor};">${nome}</span>
+    <div class="barra"><div class="barra-fill" style="width:${p}%;background:${cor};"></div></div>
+    <span class="num">${x.a}✓ ${x.e}✗ · <b>${pctTxt(x.a, x.e)}</b> (${t})</span>
+  </div>`;
+}
+
+function renderResumoMaterias(){
+  const el = document.getElementById('resumo-materias');
+  const filtro = document.getElementById('f-materia').value;
+  el.innerHTML = '';
+  MATERIAS.filter(m => m.id !== 'redacao').forEach(m => {
+    const x = { jeferson: { a: 0, e: 0 }, guilherme: { a: 0, e: 0 } };
+    lancamentos.forEach(l => {
+      if(l.disciplina === m.nome && x[l.usuario]){
+        x[l.usuario].a += l.qtd_acertos;
+        x[l.usuario].e += l.qtd_erros;
+      }
+    });
+    const card = document.createElement('div');
+    card.className = 'resumo-card' + (filtro === m.nome ? ' sel' : '');
+    card.innerHTML = `<div class="resumo-nome">${esc(nomeCurto(m.nome))}</div>` +
+      linhaBarra('Jeferson', 'var(--jeferson)', x.jeferson) +
+      linhaBarra('Guilherme', 'var(--guilherme)', x.guilherme);
+    card.addEventListener('click', () => {
+      const sel = document.getElementById('f-materia');
+      sel.value = (sel.value === m.nome) ? '' : m.nome;
+      renderDesempenho();
+    });
+    el.appendChild(card);
+  });
+}
+
+function renderDesempenho(){
+  const selMateria = document.getElementById('f-materia');
+  if(!selMateria || selMateria.options.length === 0) return;
+
+  renderResumoMaterias();
+
+  const filtroMateria = selMateria.value;
+  const jogador = document.getElementById('f-jogador').value;
+  const ordem = document.getElementById('f-ordem').value;
+  const minQ = Math.max(0, parseInt(document.getElementById('f-min').value || "0", 10));
+  const incluirZerados = document.getElementById('f-zerados').checked;
+
+  let itens = agregarAssuntos(filtroMateria, incluirZerados);
+  itens = itens.filter(i => {
+    const s = statsDoItem(i, jogador);
+    const t = s.a + s.e;
+    if(t === 0) return incluirZerados;     // sem questões: só aparece se pedido
+    return t >= minQ;
+  });
+
+  const total = i => { const s = statsDoItem(i, jogador); return s.a + s.e; };
+  const pct = i => { const s = statsDoItem(i, jogador); const t = s.a + s.e; return t ? s.a / t : null; };
+  const erros = i => statsDoItem(i, jogador).e;
+
+  itens.sort((x, y) => {
+    if(ordem === 'edital') return x.ordem - y.ordem;
+    if(ordem === 'erros')  return erros(y) - erros(x) || total(y) - total(x);
+    if(ordem === 'poucas') return total(x) - total(y) || x.ordem - y.ordem;
+    const px = pct(x), py = pct(y);
+    if(px === null && py === null) return x.ordem - y.ordem;
+    if(px === null) return 1;            // sem dados vão para o fim
+    if(py === null) return -1;
+    if(ordem === 'melhor') return py - px || total(y) - total(x);
+    return px - py || total(y) - total(x); // 'pior'
+  });
+
+  const el = document.getElementById('desempenho-lista');
+  if(itens.length === 0){
+    el.innerHTML = '<div class="feed" style="margin-top:0;"><div class="feed-vazio">Nenhum assunto para mostrar com esses filtros.</div></div>';
     return;
   }
-  lancamentos = data || [];
-  atualizarPlacar();
-  atualizarFeed();
+
+  el.innerHTML = itens.map(i => {
+    const s = statsDoItem(i, jogador);
+    const cor = corStatus(s.a, s.e);
+    const linhas =
+      (jogador !== 'guilherme' ? linhaBarra('Jeferson', 'var(--jeferson)', i.jeferson) : '') +
+      (jogador !== 'jeferson' ? linhaBarra('Guilherme', 'var(--guilherme)', i.guilherme) : '');
+    return `
+      <div class="desemp-item ${i.livre ? 'livre' : ''}" style="--st:${cor};">
+        <div class="desemp-topo">
+          <div>
+            <div class="desemp-titulo" title="${esc(i.rotulo)}">${esc(i.rotulo)}</div>
+            <div class="desemp-materia">${esc(nomeCurto(i.disciplina))}</div>
+          </div>
+          <span class="pill">${pctTxt(s.a, s.e)}</span>
+        </div>
+        ${linhas}
+      </div>`;
+  }).join('');
 }
 
+/* ---------- Histórico ---------- */
+function resetHistorico(){
+  histLimite = 50;
+  renderHistorico();
+}
+function maisHistorico(){
+  histLimite += 50;
+  renderHistorico();
+}
+function renderHistorico(){
+  const el = document.getElementById('historico-lista');
+  const btn = document.getElementById('btn-mais-hist');
+  if(!el) return;
+  const u = document.getElementById('h-jogador').value;
+  const m = document.getElementById('h-materia').value;
+
+  const filtrados = lancamentos
+    .filter(l => (!u || l.usuario === u) && (!m || l.disciplina === m))
+    .sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+
+  if(filtrados.length === 0){
+    el.className = "feed-vazio";
+    el.textContent = "Nenhum lançamento encontrado.";
+    btn.style.display = 'none';
+    return;
+  }
+  el.className = "";
+  el.innerHTML = filtrados.slice(0, histLimite).map(linhaFeed).join('');
+  btn.style.display = filtrados.length > histLimite ? 'block' : 'none';
+}
+
+/* ---------- Contagem regressiva ---------- */
 function iniciarContagem(){
   const hoje = new Date();
   const diffDias = Math.ceil((DATA_ALVO - hoje) / (1000 * 60 * 60 * 24));
@@ -765,9 +1361,10 @@ function iniciarContagem(){
   el.textContent = diffDias > 0 ? `${diffDias} dias restantes` : "dia do desafio!";
 }
 
-// Inicialização
+/* ---------- Inicialização ---------- */
 selecionarUsuario('jeferson');
 renderMaterias();
+montarFiltroMaterias();
 iniciarContagem();
 if(iniciarSupabase()){
   carregarDados();
